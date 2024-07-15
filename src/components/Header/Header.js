@@ -29,9 +29,22 @@ const Header = () => {
 const MainHeader = styled.div`
   padding: 0 32px;
   border-bottom: 1px solid ${COLORS.gray[300]};
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > a:first-of-type {
+    position: absolute;
+    left: 32px;
+  }
 `;
 
-const Nav = styled.nav``;
+const Nav = styled.nav`
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+`;
 
 const NavLink = styled.a`
   font-size: 1.125rem;
