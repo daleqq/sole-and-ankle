@@ -36,11 +36,22 @@ const ShoeCard = ({
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
+          <Tag variant={variant} />
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <PriceWrapper>
+            { variant === 'on-sale' ? (
+              <>
+                <Price variant={variant}><s>{formatPrice(price)}</s></Price>
+                <SalePrice>{formatPrice(salePrice)}</SalePrice>
+              </>
+              ) : (
+                <Price>{formatPrice(price)}</Price>
+              )
+            }
+          </PriceWrapper>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
@@ -68,6 +79,8 @@ const Image = styled.img`
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
@@ -75,7 +88,13 @@ const Name = styled.h3`
   color: ${COLORS.gray[900]};
 `;
 
-const Price = styled.span``;
+const Price = styled.span`
+  color: ${(props) => props.variant === 'on-sale' ? COLORS.gray[700] : 'inherit'}
+`;
+
+const PriceWrapper = styled.span`
+  position: relative;
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
@@ -84,6 +103,40 @@ const ColorInfo = styled.p`
 const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.primary};
+  margin-top: 6px;
+  position: absolute;
+  right: 0px;
+  top: 1rem;
 `;
+
+const TagWrapper = styled.div`
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  border-radius: 2px;
+  padding: 9px;
+  color: white;
+  font-size: ${14 / 16}rem;
+  background-color: var(--tagBackground);
+`;
+
+const Tag = ({ variant }) => {
+  let text;
+  let background;
+
+  if (variant === 'on-sale') {
+    text = 'Sale';
+    background = COLORS.primary;
+  } else if (variant === 'new-release') {
+    text = 'Just Released!'
+    background = COLORS.secondary;
+  }
+
+  return (
+    <TagWrapper style={{'--tagBackground': background}}>
+      {text}
+    </TagWrapper>
+  )
+}
 
 export default ShoeCard;
